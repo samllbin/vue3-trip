@@ -5,6 +5,7 @@
       class="tabs"
       :titles="names"
       @tabItemClick="tabClick"
+      ref="tabControlRef"
     />
     <van-nav-bar
       title="房屋详情"
@@ -24,14 +25,14 @@
     </div>
     <div class="footer">
       <img src="@/assets/img/detail/icon_ensure.png" alt="">
-      <div class="text">弘源旅途, 永无止境!</div>
+      <div class="text">rain_ice-trip</div>
     </div>
 
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getDetailInfos } from "@/services"
 
@@ -79,6 +80,7 @@ const names = computed(() => {
   return Object.keys(sectionEls.value)
 })
 const getSectionRef = (value) => {
+  if(!value) return
   const name = value.$el.getAttribute("name")
   sectionEls.value[name] = value.$el
 }
@@ -96,6 +98,23 @@ const tabClick = (index) => {
   })
 }
 
+// 页面滚动时，滚动时匹配对应的tabControl的index
+const tabControlRef = ref()
+watch(scrollTop, (newValue) => {
+  //1.获取所有区域的offsetTops
+  const els = Object.values(sectionEls.value)
+  const values = els.map(els => els.offsetTop)
+
+  //2.根据newValue进行匹配
+  let index = values.length - 1
+  for(let i = 0; i < values.length; i++ ) {
+    if(values[i] >= newValue + 44) {
+      index = i - 1;
+      break
+    }
+  }
+  tabControlRef.value?.setCurrentIndex(index)
+})
 </script>
 
 <style lang="less" scoped>
