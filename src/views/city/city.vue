@@ -2,8 +2,8 @@
   <div class="city top-page">
     <div class="top">
       <!-- 1.搜索框 -->
-      <van-search 
-        v-model="searchValue" 
+      <van-search
+        v-model="searchValue"
         placeholder="城市/区域/位置"
         shape="round"
         show-action
@@ -30,26 +30,24 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-import { storeToRefs } from 'pinia';
-import useCityStore from '@/stores/modules/city';
-import { useRouter } from 'vue-router';
-import { getCityAll } from "@/services"
+import { ref, computed } from "vue";
+import { storeToRefs } from "pinia";
+import useCityStore from "@/stores/modules/city";
+import { useRouter } from "vue-router";
+import { getCityAll } from "@/services";
 
-import CityGroup from './cpns/city-group.vue'
+import CityGroup from "./cpns/city-group.vue";
 
-const router = useRouter()
+const router = useRouter();
 
 // 搜索框功能
-const searchValue = ref("")
+const searchValue = ref("");
 const cancelClick = () => {
-  router.back()
-}
-
+  router.back();
+};
 
 // tab的切换
-const tabActive = ref()
-
+const tabActive = ref();
 
 /**
  * 这个位置发送网络请求有两个缺点:
@@ -57,26 +55,23 @@ const tabActive = ref()
  *   2.如果页面封装了很多的子组件, 子组件需要这些数据, 我们必须一步步将数据传递过去(props)
  */
 // 网络请求: 请求城市的数据
-// const allCity = ref({})
+// const allCity = ref({})ss
 // getCityAll().then(res => {
 //   allCity.value = res.data
 // })
 
-
 // 从Store中获取数据
-const cityStore = useCityStore()
-cityStore.fetchAllCitiesData()
-const { allCities } = storeToRefs(cityStore)
+const cityStore = useCityStore();
+cityStore.fetchAllCitiesData();
+const { allCities } = storeToRefs(cityStore);
 
 // 目的: 获取选中标签后的数据
 // 1.获取正确的key: 将tabs中绑定的tabAction正确绑定
 // 2.根据key从allCities获取数据, 默认直接获取的数据不是响应式的, 所以必须包裹computed
-const currentGroup = computed(() => allCities.value[tabActive.value])
-
+const currentGroup = computed(() => allCities.value[tabActive.value]);
 </script>
 
 <style lang="less" scoped>
-
 .city {
   // --van-tabs-line-height: 30px;
 
@@ -103,5 +98,4 @@ const currentGroup = computed(() => allCities.value[tabActive.value])
     overflow-y: auto;
   }
 }
-
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="order">
-    <h2>order</h2>
+    <h2>后面补充</h2>
   </div>
 </template>
 
@@ -9,5 +9,10 @@
 </script>
 
 <style lang="less" scoped>
-
+.order{
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
 </style>
